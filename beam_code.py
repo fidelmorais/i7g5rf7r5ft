@@ -166,17 +166,6 @@ def verific_flex(b, h, f_ck, M_sd, A_s, A_s_prime,omega,x, λ):
         "verificacao_armadura": A_s_min <= A_s <= A_s_max
     }
 
-# Exemplo de uso
-M_sd = 7297.1429  # Momento fletor de projeto em kN.m (JÁ MAJORADO)
-f_ck = 40  # Resistência característica à compressão do concreto em MPa
-f_yk = 500  # Resistência característica ao escoamento do aço em MPa
-b_w = 20  # Largura da viga em cm
-d = 55  # Altura útil da viga em cm
-d_prime = 4  # Altura da armadura comprimida em cm
-E_s = 210000  # Módulo de elasticidade do aço em MPa
-combinacao = 'normais'
-
-# Converter M_sd para N·cm (1 kNm = 10^5 N·cm)
 
 
 # Calcular as áreas de aço sem dividir f_ck, f_yk e E_s
@@ -243,22 +232,6 @@ def calcular_area_aco_viga_T_2(M_sd, f_ck, f_yk, b_w, d, bf, hf,E_s,d_prime, com
 
       return As_total, As_prime
 
-# Exemplo de uso com dados - breno
-M_sd = 14000  # Momento fletor de projeto em kNm já majorado
-f_ck = 30      # Resistência característica à compressão do concreto em MPa
-f_yk = 500     # Resistência característica ao escoamento do aço em MPa
-b_w = 30       # Largura da alma da viga em cm
-d = 170         # Altura útil da viga em cm
-d_prime = 4.75    # Altura da armadura comprimida em cm
-bf = 145       # Largura da flange da viga T em cm
-hf = 20        # Altura da flange da viga T em cm
-combinacao = 'normais'
-E_s = 210000  # Módulo de elasticidade do aço em MPa
-
-# Testando o cálculo
-As_total, As_prime = calcular_area_aco_viga_T_2(M_sd, f_ck, f_yk, b_w, d, bf, hf,E_s,d_prime, combinacao)
-print(f'Área de aço necessária (As_total) = {As_total:.2f} cm²')
-print(f'Área de aço comprimida (A\'s) = {As_prime:.2f} cm²')
 
 import math
 import numpy as np
@@ -353,8 +326,6 @@ def calcular_viga_cisalhamento(nome, bw, h, Vk, f_ck, f_yk, stirrup_leg, combina
     print('DETALHAMENTO DOS ESTRIBOS:')
     print(detalhamento)
 
-# Exemplo de uso
-calcular_viga_cisalhamento('V14', 25, 60, 200, 30, 500, 4, 'normais')
 
 import math
 import numpy as np
@@ -375,12 +346,6 @@ def barrasAco(areaAco):
 
     return exportResult
 
-# Exemplo de uso da função barrasAco
-areaAco = 10  # Exemplo de área de aço necessária (em cm²)
-bitolas_quantidades = barrasAco(areaAco)
-
-print("Bitolas sugeridas e quantidades necessárias:")
-print(bitolas_quantidades)
 
 import numpy as np
 
@@ -438,8 +403,6 @@ def opcoesAloj(bw, cob, diamEstribo, diamAgreg):
         print(f"\nOpções de espaçamento para bitola {bitola:.1f} mm:")
         alojVigas(bw, cob, diamEstribo, diamAgreg, bitola)
 
-# Exemplo de execução
-opcoesAloj(20, 3, 5.0, 19)  # Largura da viga = 20 cm, cobrimento = 3 cm, estribo = 5 mm, agregado = 19 mm
 
 # Função principal para dimensionar uma viga retangular, com altura útil fornecida diretamente
 def dimensionar_viga_retangular(nome, bw, h, d, M_sd, Vk, f_ck, f_yk, d_prime, E_s, stirrup_leg, combinacao, cob, diamEstribo, diamAgreg):
@@ -520,28 +483,6 @@ def dimensionar_viga_retangular(nome, bw, h, d, M_sd, Vk, f_ck, f_yk, d_prime, E
         'Detalhamento dos estribos': detalhamento,
         'Quantidade de barras': barras
     }
-
-# Exemplo de uso da função
-nome_viga = 'Viga 1'
-cob = 3.0  # Exemplo de cobrimento nominal
-diamEstribo = 8  # Diâmetro do estribo em mm
-diamAgreg = 25  # Diâmetro máximo do agregado em mm
-bw = 30  # Largura da viga (cm)
-d = 45 #altura útil da viga (cm)
-h = 50   # Altura da viga (cm)
-M_sd = 100  # Momento solicitante (kN.m)
-Vk = 200  # Carga cortante (kN)
-f_ck = 30  # Resistência do concreto (MPa)
-f_yk = 500  # Resistência do aço (MPa)
-d_prime = 5  # Distância da armadura comprimida (cm)
-E_s = 210000  # Módulo de elasticidade do aço (MPa)
-stirrup_leg = 2  # Número de pernas do estribo
-combinacao = 'normais'  # Combinação de carregamento
-
-# Chama a função de dimensionamento
-resultado = dimensionar_viga_retangular(nome_viga, bw, h, d, M_sd, Vk, f_ck, f_yk, d_prime, E_s, stirrup_leg, combinacao,cob,diamEstribo,diamAgreg)
-
-import math
 
 # Dicionário para valores de alfa_fg com base no tipo de seção
 secoes = {
@@ -760,146 +701,3 @@ def verificar_ELS(b, h, fck, Yt, tipo_secao, bw, hf, bf, As, As_prime, d, Es, co
         memorial += "Conclusão: A viga não está adequada nos parâmetros de ELS-F e/ou ELS-W.\n"
 
     return memorial
-
-# Exemplo de parâmetros
-b = 20  # largura da viga em cm
-h = 50  # altura da viga em cm
-fck = 25  # resistência característica do concreto em MPa
-Yt = 25  # distância do centroide até a borda tracionada (cm)
-tipo_secao = 'Seções retangulares'  # recebe os parâmetros"Seções T ou duplo T", "Seções I ou T invertido", "Seções retangulares"
-bw = 20  # largura da alma da viga em cm
-hf = 10  # altura da mesa da viga T em cm
-bf = 40  # largura da mesa da viga T em cm
-As = 9.16  # área de aço da armadura tracionada em cm²
-As_prime = 5  # área de aço da armadura comprimida em cm²
-d = 45  # altura útil em cm
-Es = 210e3  # módulo de elasticidade do aço em MPa
-cobrimento = 3  # cobrimento nominal em cm
-phi_est = 16  # diâmetro da barra da armadura em mm
-n_camadas = 2  # número de camadas de barras
-phi_long = 16  # diâmetro da barra longitudinal em mm
-a_v = 2  # espaçamento vertical entre as barras em cm
-Mcf = 30  # momento fletor calculado em kN.m
-tipo_barra = "nervuradas"  # tipo da barra
-L = 5  # comprimento do vão da viga em metros
-deformacao_calculada = 15  # deformação calculada pelo Autodesk Robot em mm
-limite_wk = 0.4  # limite de abertura de fissura permitido em mm
-
-# Chamada da função verificar_ELS
-memorial_de_calculo = verificar_ELS(b, h, fck, Yt, tipo_secao, bw, hf, bf, As, As_prime, d, Es, cobrimento, phi_est,
-                  n_camadas, phi_long, a_v, Mcf, tipo_barra, L, deformacao_calculada, limite_wk)
-
-# Exibindo o memorial de cálculo
-print(memorial_de_calculo)
-
-import tkinter as tk
-from tkinter import ttk
-
-# Funções de cálculo (pode importar do seu código existente)
-# from seu_modulo import dimensionar_viga_retangular, verificar_ELS
-
-def calcular_viga():
-    # Pegando os valores de entrada
-    nome = entrada_nome.get()
-    bw = float(entrada_bw.get())
-    h = float(entrada_h.get())
-    d = float(entrada_d.get())
-    M_sd = float(entrada_Msd.get())
-    Vk = float(entrada_Vk.get())
-    f_ck = float(entrada_fck.get())
-    f_yk = float(entrada_fyk.get())
-    d_prime = float(entrada_d_prime.get())
-    E_s = float(entrada_Es.get())
-    stirrup_leg = int(entrada_stirrup_leg.get())
-    combinacao = entrada_combinacao.get()
-    cob = float(entrada_cob.get())
-    diamEstribo = float(entrada_diamEstribo.get())
-    diamAgreg = float(entrada_diamAgreg.get())
-
-    # Chamando a função de cálculo (adaptar isso ao seu código)
-    resultado = dimensionar_viga_retangular(nome, bw, h, d, M_sd, Vk, f_ck, f_yk, d_prime, E_s, stirrup_leg, combinacao, cob, diamEstribo, diamAgreg)
-    
-    # Exibir os resultados
-    resultado_text.delete(1.0, tk.END)
-    for key, value in resultado.items():
-        resultado_text.insert(tk.END, f"{key}: {value}\n")
-
-# Criando a janela principal
-janela = tk.Tk()
-janela.title("P-Trick - Dimensionamento de Vigas")
-
-# Frame para entradas de dados
-frame_entradas = ttk.LabelFrame(janela, text="Entradas")
-frame_entradas.grid(row=0, column=0, padx=10, pady=10)
-
-# Entradas
-ttk.Label(frame_entradas, text="Nome da Viga:").grid(row=0, column=0, sticky=tk.W)
-entrada_nome = ttk.Entry(frame_entradas)
-entrada_nome.grid(row=0, column=1)
-
-ttk.Label(frame_entradas, text="Largura (bw) [cm]:").grid(row=1, column=0, sticky=tk.W)
-entrada_bw = ttk.Entry(frame_entradas)
-entrada_bw.grid(row=1, column=1)
-
-ttk.Label(frame_entradas, text="Altura (h) [cm]:").grid(row=2, column=0, sticky=tk.W)
-entrada_h = ttk.Entry(frame_entradas)
-entrada_h.grid(row=2, column=1)
-
-ttk.Label(frame_entradas, text="Altura útil (d) [cm]:").grid(row=3, column=0, sticky=tk.W)
-entrada_d = ttk.Entry(frame_entradas)
-entrada_d.grid(row=3, column=1)
-
-ttk.Label(frame_entradas, text="Momento (Msd) [kN.m]:").grid(row=4, column=0, sticky=tk.W)
-entrada_Msd = ttk.Entry(frame_entradas)
-entrada_Msd.grid(row=4, column=1)
-
-ttk.Label(frame_entradas, text="Esforço cortante (Vk) [kN]:").grid(row=5, column=0, sticky=tk.W)
-entrada_Vk = ttk.Entry(frame_entradas)
-entrada_Vk.grid(row=5, column=1)
-
-ttk.Label(frame_entradas, text="fck [MPa]:").grid(row=6, column=0, sticky=tk.W)
-entrada_fck = ttk.Entry(frame_entradas)
-entrada_fck.grid(row=6, column=1)
-
-ttk.Label(frame_entradas, text="fyk [MPa]:").grid(row=7, column=0, sticky=tk.W)
-entrada_fyk = ttk.Entry(frame_entradas)
-entrada_fyk.grid(row=7, column=1)
-
-ttk.Label(frame_entradas, text="d' [cm]:").grid(row=8, column=0, sticky=tk.W)
-entrada_d_prime = ttk.Entry(frame_entradas)
-entrada_d_prime.grid(row=8, column=1)
-
-ttk.Label(frame_entradas, text="Es [GPa]:").grid(row=9, column=0, sticky=tk.W)
-entrada_Es = ttk.Entry(frame_entradas)
-entrada_Es.grid(row=9, column=1)
-
-ttk.Label(frame_entradas, text="Número de pernas estribo:").grid(row=10, column=0, sticky=tk.W)
-entrada_stirrup_leg = ttk.Entry(frame_entradas)
-entrada_stirrup_leg.grid(row=10, column=1)
-
-ttk.Label(frame_entradas, text="Combinação:").grid(row=11, column=0, sticky=tk.W)
-entrada_combinacao = ttk.Entry(frame_entradas)
-entrada_combinacao.grid(row=11, column=1)
-
-ttk.Label(frame_entradas, text="Cobrimento [cm]:").grid(row=12, column=0, sticky=tk.W)
-entrada_cob = ttk.Entry(frame_entradas)
-entrada_cob.grid(row=12, column=1)
-
-ttk.Label(frame_entradas, text="Diâmetro do estribo [mm]:").grid(row=13, column=0, sticky=tk.W)
-entrada_diamEstribo = ttk.Entry(frame_entradas)
-entrada_diamEstribo.grid(row=13, column=1)
-
-ttk.Label(frame_entradas, text="Diâmetro do agregado [mm]:").grid(row=14, column=0, sticky=tk.W)
-entrada_diamAgreg = ttk.Entry(frame_entradas)
-entrada_diamAgreg.grid(row=14, column=1)
-
-# Botão para calcular
-botao_calcular = ttk.Button(janela, text="Calcular", command=calcular_viga)
-botao_calcular.grid(row=1, column=0, pady=10)
-
-# Exibição dos resultados
-resultado_text = tk.Text(janela, height=20, width=80)
-resultado_text.grid(row=2, column=0, padx=10, pady=10)
-
-# Iniciando o loop principal da interface
-janela.mainloop()
