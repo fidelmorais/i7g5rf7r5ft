@@ -701,3 +701,56 @@ def verificar_ELS(b, h, fck, Yt, tipo_secao, bw, hf, bf, As, As_prime, d, Es, co
         memorial += "Conclusão: A viga não está adequada nos parâmetros de ELS-F e/ou ELS-W.\n"
 
     return memorial
+
+import streamlit as st
+import math
+import pandas as pd
+
+# As funções e cálculos já fornecidos anteriormente devem ser incluídos aqui
+
+# Função para exibir os resultados na interface do Streamlit
+def exibir_memorial(memorial):
+    st.subheader("Memorial de Cálculo")
+    st.text(memorial)
+
+# Função principal para criar o front-end
+def main():
+    st.title("Dimensionamento de Vigas de Concreto Armado")
+
+    # Coleta de dados de entrada
+    nome = st.text_input("Nome da Viga", value="Viga 1")
+    bw = st.number_input("Largura da Seção (bw) [cm]", value=30)
+    h = st.number_input("Altura da Seção (h) [cm]", value=50)
+    d = st.number_input("Altura Útil (d) [cm]", value=45)
+    M_sd = st.number_input("Momento Solicitante (M_sd) [kN.m]", value=200)
+    Vk = st.number_input("Força Cortante (Vk) [kN]", value=100)
+    f_ck = st.number_input("Resistência do Concreto (f_ck) [MPa]", value=30)
+    f_yk = st.number_input("Tensão de Escoamento do Aço (f_yk) [MPa]", value=500)
+    d_prime = st.number_input("Altura Útil da Armadura Comprimida (d') [cm]", value=5)
+    E_s = st.number_input("Módulo de Elasticidade do Aço (E_s) [GPa]", value=210)
+    stirrup_leg = st.number_input("Número de Pernas dos Estribos", value=2)
+    combinacao = st.selectbox("Combinação de Carga", ["Permanente", "Acidental"])
+    cob = st.number_input("Cobrimento Nominal (cob) [cm]", value=3)
+    diamEstribo = st.number_input("Diâmetro do Estribo [mm]", value=6.3)
+    diamAgreg = st.number_input("Diâmetro Máximo do Agregado [mm]", value=20)
+    L = st.number_input("Comprimento do Vão (L) [m]", value=6)
+    deformacao_calculada = st.number_input("Deformação Calculada [mm]", value=5.0)
+    limite_wk = st.number_input("Limite de Abertura de Fissura (Wk) [mm]", value=0.3)
+    tipo_secao = st.selectbox("Tipo de Seção", ["Seções T ou duplo T", "Seções I ou T invertido", "Seções retangulares"])
+    tipo_barra = st.selectbox("Tipo de Barra", ["lisas", "dentadas", "nervuradas"])
+
+    # Cálculos e verificação
+    if st.button("Dimensionar Viga"):
+        # Chama a função de verificação geral de ELS (incluindo ELS-F e ELS-W)
+        memorial = verificar_ELS(
+            bw, h, f_ck, h/2, tipo_secao, bw, h, bw, M_sd, M_sd, d, E_s, cob, diamEstribo,
+            1, 12.5, 2.25, M_sd, tipo_barra, L, deformacao_calculada, limite_wk
+        )
+
+        # Exibe o memorial de cálculo
+        exibir_memorial(memorial)
+
+# Rodar o aplicativo Streamlit
+if __name__ == "__main__":
+    main()
+
